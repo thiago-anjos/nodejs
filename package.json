@@ -1,0 +1,14 @@
+{
+  "name": "nodejs-the-complete-guide",
+  "version": "1.0.0",
+  "description": "Complete nodejs guide",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "thiago dos anjos",
+  "license": "ISC"
+}
