@@ -11,5 +11,8 @@
     "start": "nodemon app.js"
   },
   "author": "thiago dos anjos",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
 }
