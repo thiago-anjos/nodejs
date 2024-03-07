@@ -21,7 +21,7 @@ function requestHandler(req, res) {
     return req.on("end", () => {
       const parsedBody = Buffer.concat(body).toString();
       const message = parsedBody.split("=")[1];
-      console.log(message);
+      console.log("mensagem", message);
       fs.writeFile("message.txt", message, (err) => {
         if (err) {
           console.error("Error:", err);
@@ -37,7 +37,7 @@ function requestHandler(req, res) {
   }
   res.setHeader("Content-Type", "text/html");
   res.write("<html>");
-  res.write("<head><title>My First Page</title></head>");
+  res.write("<head><title>My First Page 2</title></head>");
   res.write("<body><h1>Hello from my Node.js Server!</h1></body>");
   res.write("</html>");
   res.end();
