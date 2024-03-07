@@ -1,52 +1,67 @@
+const express = require("express");
+const router = express.Router();
+const path = require("path");
 const fs = require("fs");
 
-function requestHandler(req, res) {
-  const url = req.url;
-  const method = req.method;
+const FILENAME = "names.txt";
 
-  if (url === "/") {
-    res.write("<html>");
-    res.write("<head><title>Enter Message</title></head>");
-    res.write(
-      "<body><form action='/message' method='POST'><input type='text' name='message'><button type='submit'>Send</button></form></body>"
-    );
-    res.write("</html>");
-    return res.end();
+function fileExists(filePath) {
+  try {
+    return fs.statSync(filePath).isFile();
+  } catch (err) {
+    return false;
   }
-  if (url === "/message" && method === "POST") {
-    const body = [];
-    req.on("data", (chunk) => {
-      body.push(chunk);
-    });
-    return req.on("end", () => {
-      const parsedBody = Buffer.concat(body).toString();
-      const message = parsedBody.split("=")[1];
-      console.log(message);
-      fs.writeFile("message.txt", message, (err) => {
-        if (err) {
-          console.error("Error:", err);
-          res.statusCode = 500;
-          res.end("Internal Server Error");
-        } else {
-          res.statusCode = 302;
-          res.setHeader("Location", "/");
-          return res.end();
-        }
-      });
-    });
-  }
-  res.setHeader("Content-Type", "text/html");
-  res.write("<html>");
-  res.write("<head><title>My First Page</title></head>");
-  res.write("<body><h1>Hello from my Node.js Server!</h1></body>");
-  res.write("</html>");
-  res.end();
 }
 
-module.exports = requestHandler;
+function addNameToFile(nameInput) {
+  const name = nameInput.trim();
+  fs.appendFile(FILENAME, name + "\n", (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+}
 
-//example
-// module.exports = {
-//   handler: requestHandler,
-//   someText: "Some hard coded text",
-// }
+function readNamesFromFile() {
+  try {
+    return fs.readFileSync(FILENAME, "utf8").split("\n").filter(Boolean);
+  } catch (error) {
+    console.error(err);
+    return [];
+  }
+}
+
+router.get("/", (req, res) => {
+  res.send("Welcome to the home page");
+});
+
+router.get("/about", (req, res) => {
+  res.send("Welcome to the about page");
+});
+
+router.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "form.html"));
+});
+
+router.post("/contact", (req, res) => {
+  const formData = req.body;
+  const name = formData.name;
+
+  if (fileExists("names.txt")) {
+    addNameToFile(name);
+  } else {
+    try {
+      fs.writeFileSync("names.txt", name + "\n");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  res.send("Thank you for your name, " + formData.name + "!");
+});
+
+router.get("/users", (req, res) => {
+  const names = readNamesFromFile();
+  res.send(names);
+});
+
+module.exports = router;
