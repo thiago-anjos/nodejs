@@ -7,7 +7,7 @@ const adminData = require("./admin");
 router.get("/", (req, res, next) => {
   const products = adminData.products;
   // the first argument is the name of template, the second is the datra
-  res.render("shop", { products, docTitle: "Shop Title Dinamyc" });
+  res.render("shop", { products, docTitle: "Shop Title Dinamyc", path: "/" });
 });
 
 module.exports = router;
