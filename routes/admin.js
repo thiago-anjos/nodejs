@@ -9,6 +9,10 @@ router.get("/add-product", (req, res, next) => {
   res.render("add-product", {
     pageTitle: "Add Product Dynamic title",
     path: "/admin/add-product",
+    activeShop: true,
+    formCSS: true,
+    productCSS: true,
+    layoyt: false,
   });
 });
 

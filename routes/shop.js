@@ -9,9 +9,12 @@ router.get("/", (req, res, next) => {
   // the first argument is the name of template, the second is the datra
   res.render("shop", {
     products,
-    docTitle: "Shop Title Dinamyc",
+    pageTitle: "Shop Title Dinamyc",
     path: "/",
     hasProducts: products.length > 0,
+    activeShop: true,
+    productsCSS: true,
+    layoyt: false,
   });
 });
 
